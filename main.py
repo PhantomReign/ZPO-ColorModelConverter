@@ -4,7 +4,7 @@ import argparse
 import os
 import conversions.cmy
 import conversions.hsv
-
+import conversions.hls
 
 def convert_model(file_path, used_conversion):
     in_file_path = file_path
@@ -21,9 +21,19 @@ def convert_model(file_path, used_conversion):
     elif used_conversion == "rgb2hsv":
         out_image = conversions.hsv.rgb2hsv(in_image)
         cv2.imwrite(file_path_with_name + "RGB2HSV" + file_extension, out_image)
-    else:
+    elif used_conversion == "hsv2rgb":
         out_image = conversions.hsv.hsv2rgb(in_image)
         cv2.imwrite(file_path_with_name + "HSV2RGB" + file_extension, out_image)
+    elif used_conversion == "rgb2hls":
+        out_image = conversions.hls.rgb2hls(in_image)
+        cv2.imwrite(file_path_with_name + "RGB2HLS" + file_extension, out_image)
+    elif used_conversion == "hls2rgb":
+        out_image = conversions.hls.hls2rgb(in_image)
+        cv2.imwrite(file_path_with_name + "HLS2RGB" + file_extension, out_image)
+
+    # test
+    #outS = cv2.cvtColor(in_image, cv2.COLOR_HLS2BGR)
+    #cv2.imwrite(file_path_with_name + "SOURCE" + file_extension, outS)
 
 
 def main():
@@ -35,7 +45,8 @@ def main():
                                               " .ppm, .sr, .ras, .tiff, .tif", required=True)
     required_args.add_argument("--convert", help="Type of conversion - available:"
                                                  " rgb2cmy, cmy2rgb,"
-                                                 " rgb2hsv, hsv2rgb", required=True)
+                                                 " rgb2hsv, hsv2rgb"
+                                                 " rgb2hls, hls2rgb", required=True)
     args = parser.parse_args()
 
     if not os.path.isfile(args.path):
@@ -60,7 +71,7 @@ def main():
         sys.exit(-2)
 
     conversion_error = True
-    supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb"]
+    supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb", "rgb2hls", "hls2rgb"]
     for conversion in supported_conversions:
         if used_conversion == conversion:
             conversion_error = False
