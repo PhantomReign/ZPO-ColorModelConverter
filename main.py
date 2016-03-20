@@ -5,6 +5,7 @@ import os
 import conversions.cmy
 import conversions.hsv
 import conversions.hls
+import conversions.ycbcr
 
 def convert_model(file_path, used_conversion):
     in_file_path = file_path
@@ -30,9 +31,15 @@ def convert_model(file_path, used_conversion):
     elif used_conversion == "hls2rgb":
         out_image = conversions.hls.hls2rgb(in_image)
         cv2.imwrite(file_path_with_name + "HLS2RGB" + file_extension, out_image)
+    elif used_conversion == "rgb2ycbcr":
+        out_image = conversions.ycbcr.rgb2ycbcr(in_image)
+        cv2.imwrite(file_path_with_name + "RGB2YCBCR" + file_extension, out_image)
+    elif used_conversion == "ycbcr2rgb":
+        out_image = conversions.ycbcr.ycbcr2rgb(in_image)
+        cv2.imwrite(file_path_with_name + "GRAY2RGB" + file_extension, out_image)
 
     # test
-    #outS = cv2.cvtColor(in_image, cv2.COLOR_HLS2BGR)
+    #outS = cv2.cvtColor(in_image, cv2.COLOR_YCrCb2BGR)
     #cv2.imwrite(file_path_with_name + "SOURCE" + file_extension, outS)
 
 
@@ -46,7 +53,8 @@ def main():
     required_args.add_argument("--convert", help="Type of conversion - available:"
                                                  " rgb2cmy, cmy2rgb,"
                                                  " rgb2hsv, hsv2rgb"
-                                                 " rgb2hls, hls2rgb", required=True)
+                                                 " rgb2hls, hls2rgb"
+                                                 " rgb2ycbcr, ycbcr2rgb", required=True)
     args = parser.parse_args()
 
     if not os.path.isfile(args.path):
@@ -71,7 +79,7 @@ def main():
         sys.exit(-2)
 
     conversion_error = True
-    supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb", "rgb2hls", "hls2rgb"]
+    supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb", "rgb2hls", "hls2rgb", "rgb2ycbcr", "ycbcr2rgb"]
     for conversion in supported_conversions:
         if used_conversion == conversion:
             conversion_error = False

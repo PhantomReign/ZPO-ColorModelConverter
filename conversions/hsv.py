@@ -1,6 +1,35 @@
-import cv2
 import numpy as np
 import math
+
+
+def compute_hsv_pixel(R, G, B):
+    max_value = max(R, G, B)
+    min_value = min(R, G, B)
+
+    if max_value == 0:
+        S = 0
+    else:
+        S = (max_value - min_value) / max_value
+
+    V = max_value
+    H = max_value
+
+    if max_value == min_value:
+        H = 0
+    else:
+        if R == max_value:
+            if G < B:
+                H = (G - B) / (max_value - min_value) + 6
+            else:
+                H = (G - B) / (max_value - min_value) + 0
+        elif G == max_value:
+            H = (B - R) / (max_value - min_value) + 2
+        elif B == max_value:
+            H = (R - G) / (max_value - min_value) + 4
+
+        H /= 6.
+
+    return H, S, V
 
 
 # used Foley and VanDam algorithm
@@ -13,37 +42,50 @@ def rgb2hsv(img):
             G = img[col, row][1] / 255.
             B = img[col, row][0] / 255.
 
-            maxValue = max(R, G, B)
-            minValue = min(R, G, B)
+            pixel = compute_hsv_pixel(R, G, B)
 
-            if maxValue == 0:
-                S = 0
-            else:
-                S = (maxValue - minValue) / maxValue
-
-            V = maxValue
-            H = maxValue
-
-            if maxValue == minValue:
-                H = 0
-            else:
-                if R == maxValue:
-                    if G < B:
-                        H = (G - B) / (maxValue - minValue) + 6
-                    else:
-                        H = (G - B) / (maxValue - minValue) + 0
-                elif G == maxValue:
-                    H = (B - R) / (maxValue - minValue) + 2
-                elif B == maxValue:
-                    H = (R - G) / (maxValue - minValue) + 4
-
-                H /= 6.
-
-            out_img[col, row][0] = H * 180
-            out_img[col, row][1] = S * 255
-            out_img[col, row][2] = V * 255
+            out_img[col, row][0] = pixel[0] * 180
+            out_img[col, row][1] = pixel[1] * 255
+            out_img[col, row][2] = pixel[2] * 255
 
     return out_img
+
+
+def compute_rgb_pixel(H, S, V):
+    R = G = B = 0
+
+    i = math.floor(H * 6)
+    f = H * 6 - i
+    p = V * (1 - S)
+    q = V * (1 - f * S)
+    t = V * (1 - (1 - f) * S)
+
+    if i % 6 == 0:
+        R = V
+        G = t
+        B = p
+    elif i % 6 == 1:
+        R = q
+        G = V
+        B = p
+    elif i % 6 == 2:
+        R = p
+        G = V
+        B = t
+    elif i % 6 == 3:
+        R = p
+        G = q
+        B = V
+    elif i % 6 == 4:
+        R = t
+        G = p
+        B = V
+    elif i % 6 == 5:
+        R = V
+        G = p
+        B = q
+
+    return R, G, B
 
 
 def hsv2rgb(img):
@@ -55,39 +97,10 @@ def hsv2rgb(img):
             S = img[col, row][1] / 255.
             H = img[col, row][0] / 180.
 
-            i = math.floor(H * 6)
-            f = H * 6 - i
-            p = V * (1 - S)
-            q = V * (1 - f * S)
-            t = V * (1 - (1 - f) * S)
+            pixel = compute_rgb_pixel(H, S, V)
 
-            if i % 6 == 0:
-                R = V
-                G = t
-                B = p
-            elif i % 6 == 1:
-                R = q
-                G = V
-                B = p
-            elif i % 6 == 2:
-                R = p
-                G = V
-                B = t
-            elif i % 6 == 3:
-                R = p
-                G = q
-                B = V
-            elif i % 6 == 4:
-                R = t
-                G = p
-                B = V
-            elif i % 6 == 5:
-                R = V
-                G = p
-                B = q
-
-            out_img[col, row][0] = B * 255
-            out_img[col, row][1] = G * 255
-            out_img[col, row][2] = R * 255
+            out_img[col, row][0] = pixel[2] * 255
+            out_img[col, row][1] = pixel[1] * 255
+            out_img[col, row][2] = pixel[0] * 255
 
     return out_img
