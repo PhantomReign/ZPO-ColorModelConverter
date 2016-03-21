@@ -6,6 +6,7 @@ import conversions.cmy
 import conversions.hsv
 import conversions.hls
 import conversions.ycbcr
+import conversions.xyz
 
 def convert_model(file_path, used_conversion):
     in_file_path = file_path
@@ -36,10 +37,16 @@ def convert_model(file_path, used_conversion):
         cv2.imwrite(file_path_with_name + "RGB2YCBCR" + file_extension, out_image)
     elif used_conversion == "ycbcr2rgb":
         out_image = conversions.ycbcr.ycbcr2rgb(in_image)
-        cv2.imwrite(file_path_with_name + "GRAY2RGB" + file_extension, out_image)
+        cv2.imwrite(file_path_with_name + "YCBCR2RGB" + file_extension, out_image)
+    elif used_conversion == "rgb2xyz":
+        out_image = conversions.xyz.rgb2xyz(in_image)
+        cv2.imwrite(file_path_with_name + "RGB2XYZ" + file_extension, out_image)
+    elif used_conversion == "xyz2rgb":
+        out_image = conversions.xyz.xyz2rgb(in_image)
+        cv2.imwrite(file_path_with_name + "XYZ2RGB" + file_extension, out_image)
 
     # test
-    #outS = cv2.cvtColor(in_image, cv2.COLOR_YCrCb2BGR)
+    #outS = cv2.cvtColor(in_image, cv2.COLOR_XYZ2BGR)
     #cv2.imwrite(file_path_with_name + "SOURCE" + file_extension, outS)
 
 
@@ -54,7 +61,8 @@ def main():
                                                  " rgb2cmy, cmy2rgb,"
                                                  " rgb2hsv, hsv2rgb"
                                                  " rgb2hls, hls2rgb"
-                                                 " rgb2ycbcr, ycbcr2rgb", required=True)
+                                                 " rgb2ycbcr, ycbcr2rgb"
+                                                 " rgb2xyz, xyz2rgb", required=True)
     args = parser.parse_args()
 
     if not os.path.isfile(args.path):
@@ -79,7 +87,8 @@ def main():
         sys.exit(-2)
 
     conversion_error = True
-    supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb", "rgb2hls", "hls2rgb", "rgb2ycbcr", "ycbcr2rgb"]
+    supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb", "rgb2hls", "hls2rgb",
+                             "rgb2ycbcr", "ycbcr2rgb", "rgb2xyz", "xyz2rgb"]
     for conversion in supported_conversions:
         if used_conversion == conversion:
             conversion_error = False
