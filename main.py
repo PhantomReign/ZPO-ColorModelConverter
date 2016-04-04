@@ -9,6 +9,7 @@ import conversions.ycbcr
 import conversions.xyz
 import conversions.yuv
 import conversions.skin
+import conversions.grey
 
 
 def save_img(image, path, conversion, extension):
@@ -60,9 +61,12 @@ def convert_model(file_path, used_conversion):
     elif used_conversion == "rgb2skin":
         out_image = conversions.skin.rgb2skin(in_image)
         save_img(out_image, file_path_with_name, "RGB2SKIN", file_extension)
+    elif used_conversion == "rgb2grey":
+        out_image = conversions.grey.rgb2grey(in_image)
+        save_img(out_image, file_path_with_name, "RGB2GREY", file_extension)
 
     # test
-    # outS = cv2.cvtColor(in_image, cv2.COLOR_RGB2YUV)
+    # outS = cv2.cvtColor(in_image, cv2.COLOR_BGR2GRAY)
     # cv2.imwrite(file_path_with_name + "SOURCE" + file_extension, outS)
 
 
@@ -80,7 +84,7 @@ def main():
                                                  " rgb2ycbcr, ycbcr2rgb"
                                                  " rgb2xyz, xyz2rgb"
                                                  " rgb2yuv, yuv2rgb"
-                                                 " rgb2skin", required=True)
+                                                 " rgb2skin, rgb2grey", required=True)
     args = parser.parse_args()
 
     if not os.path.isfile(args.path):
@@ -107,7 +111,7 @@ def main():
     conversion_error = True
     supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb", "rgb2hls", "hls2rgb",
                              "rgb2ycbcr", "ycbcr2rgb", "rgb2xyz", "xyz2rgb", "rgb2yuv", "yuv2rgb",
-                             "rgb2skin"]
+                             "rgb2skin", "rgb2grey"]
     for conversion in supported_conversions:
         if used_conversion == conversion:
             conversion_error = False
