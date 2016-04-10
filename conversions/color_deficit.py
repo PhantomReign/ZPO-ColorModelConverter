@@ -107,9 +107,9 @@ def rgb2deficit(img, deficit):
             G = img[col, row][1] / 255.
             B = img[col, row][0] / 255.
 
-            if deficit == "rgb2p-nope":
+            if deficit == "rgb2p-nopia":
                 pixel = compute_protanopia_pixel(R, G, B)
-            elif deficit == "rgb2d-nope":
+            elif deficit == "rgb2d-nopia":
                 pixel = compute_deuteranopia_pixel(R, G, B)
             else:
                 pixel = compute_tritanopia_pixel(R, G, B)

@@ -60,8 +60,8 @@ def yuv2rgb(img):
 
             pixel = compute_rgb_pixel(Y, U, V)
 
-            out_img[col, row][0] = pixel[0]
+            out_img[col, row][0] = pixel[2]
             out_img[col, row][1] = pixel[1]
-            out_img[col, row][2] = pixel[2]
+            out_img[col, row][2] = pixel[0]
 
     return out_img
