@@ -8,8 +8,9 @@ import conversions.hls
 import conversions.ycbcr
 import conversions.xyz
 import conversions.yuv
-import conversions.skin
+import conversions.skin_segmentation
 import conversions.grey
+import conversions.color_deficit
 
 
 def save_img(image, path, conversion, extension):
@@ -59,12 +60,20 @@ def convert_model(file_path, used_conversion):
         out_image = conversions.yuv.yuv2rgb(in_image)
         save_img(out_image, file_path_with_name, "YUV2RGB", file_extension)
     elif used_conversion == "rgb2skin":
-        out_image = conversions.skin.rgb2skin(in_image)
+        out_image = conversions.skin_segmentation.rgb2skin(in_image)
         save_img(out_image, file_path_with_name, "RGB2SKIN", file_extension)
     elif used_conversion == "rgb2grey":
         out_image = conversions.grey.rgb2grey(in_image)
         save_img(out_image, file_path_with_name, "RGB2GREY", file_extension)
-
+    elif used_conversion == "rgb2p-nopia":
+        out_image = conversions.color_deficit.rgb2deficit(in_image, "rgb2p-nopia")
+        save_img(out_image, file_path_with_name, "RGB2P-NOPIA", file_extension)
+    elif used_conversion == "rgb2d-nopia":
+        out_image = conversions.color_deficit.rgb2deficit(in_image, "rgb2d-nopia")
+        save_img(out_image, file_path_with_name, "RGB2D-NOPIA", file_extension)
+    elif used_conversion == "rgb2t-nopia":
+        out_image = conversions.color_deficit.rgb2deficit(in_image, "rgb2t-nopia")
+        save_img(out_image, file_path_with_name, "RGB2T-NOPIA", file_extension)
     # test
     # outS = cv2.cvtColor(in_image, cv2.COLOR_BGR2GRAY)
     # cv2.imwrite(file_path_with_name + "SOURCE" + file_extension, outS)
@@ -84,7 +93,9 @@ def main():
                                                  " rgb2ycbcr, ycbcr2rgb"
                                                  " rgb2xyz, xyz2rgb"
                                                  " rgb2yuv, yuv2rgb"
-                                                 " rgb2skin, rgb2grey", required=True)
+                                                 " rgb2skin, rgb2grey"
+                                                 " rgb2p-nopia, rgb2d-nopia"
+                                                 " rgb2t-nopia", required=True)
     args = parser.parse_args()
 
     if not os.path.isfile(args.path):
@@ -111,7 +122,7 @@ def main():
     conversion_error = True
     supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb", "rgb2hls", "hls2rgb",
                              "rgb2ycbcr", "ycbcr2rgb", "rgb2xyz", "xyz2rgb", "rgb2yuv", "yuv2rgb",
-                             "rgb2skin", "rgb2grey"]
+                             "rgb2skin", "rgb2grey", "rgb2p-nopia", "rgb2d-nopia", "rgb2t-nopia"]
     for conversion in supported_conversions:
         if used_conversion == conversion:
             conversion_error = False
