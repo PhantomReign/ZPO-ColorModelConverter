@@ -1,7 +1,11 @@
 import numpy as np
 
+# Source: http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+#         https://en.wikipedia.org/wiki/HSL_and_HSV
+#         http://opencv.itseez.com/2.4/modules/imgproc/doc/miscellaneous_transformations.html
 
-def compute_hls_pixel(R, G, B):
+
+def compute_hsl_pixel(R, G, B):
     max_value = max(R, G, B)
     min_value = min(R, G, B)
     H = S = 0
@@ -33,10 +37,10 @@ def compute_hls_pixel(R, G, B):
         elif H > 1:
             H -= 1
 
-    return H, L, S
+    return H, S, L
 
 
-def rgb2hls(img):
+def rgb2hsl(img):
     cols, rows, channels = img.shape
     out_img = np.zeros((cols, rows, 3), np.uint8)
     for col in range(cols):
@@ -45,11 +49,11 @@ def rgb2hls(img):
             G = img[col, row][1] / 255.
             B = img[col, row][0] / 255.
 
-            pixel = compute_hls_pixel(R, G, B)
+            pixel = compute_hsl_pixel(R, G, B)
 
-            out_img[col, row][0] = pixel[0] * 180
+            out_img[col, row][0] = pixel[2] * 255
             out_img[col, row][1] = pixel[1] * 255
-            out_img[col, row][2] = pixel[2] * 255
+            out_img[col, row][2] = pixel[0] * 180
 
     return out_img
 
@@ -70,7 +74,7 @@ def hue2rgb(v1, v2, vh):
         return v1
 
 
-def compute_rgb_pixel(H, L, S):
+def compute_rgb_pixel(H, S, L):
     if S == 0:
         R = L
         G = L
@@ -93,16 +97,16 @@ def compute_rgb_pixel(H, L, S):
     return R, G, B
 
 
-def hls2rgb(img):
+def hsl2rgb(img):
     cols, rows, channels = img.shape
     out_img = np.zeros((cols, rows, 3), np.uint8)
     for col in range(cols):
         for row in range(rows):
-            S = img[col, row][2] / 255.
-            L = img[col, row][1] / 255.
-            H = img[col, row][0] / 180.
+            H = img[col, row][2] / 180.
+            S = img[col, row][1] / 255.
+            L = img[col, row][0] / 255.
 
-            pixel = compute_rgb_pixel(H, L, S)
+            pixel = compute_rgb_pixel(H, S, L)
 
             out_img[col, row][0] = pixel[2] * 255
             out_img[col, row][1] = pixel[1] * 255

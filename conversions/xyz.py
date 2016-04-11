@@ -9,10 +9,10 @@ def compute_xyz_pixel(R, G, B):
     Y = R * 0.212671 + G * 0.715160 + B * 0.072169
     Z = R * 0.019334 + G * 0.119193 + B * 0.950227
 
-    if Z > 1.0:
-        Z = 1.0
+    if Z > 255:
+        Z = 255
 
-    return X, Y, Z
+    return round(X), round(Y), round(Z)
 
 
 def rgb2xyz(img):
@@ -20,15 +20,15 @@ def rgb2xyz(img):
     out_img = np.zeros((cols, rows, 3), np.uint8)
     for col in range(cols):
         for row in range(rows):
-            R = img[col, row][2] / 255.
-            G = img[col, row][1] / 255.
-            B = img[col, row][0] / 255.
+            R = img[col, row][2]
+            G = img[col, row][1]
+            B = img[col, row][0]
 
             pixel = compute_xyz_pixel(R, G, B)
 
-            out_img[col, row][0] = pixel[0] * 255
-            out_img[col, row][1] = pixel[1] * 255
-            out_img[col, row][2] = pixel[2] * 255
+            out_img[col, row][0] = pixel[2]
+            out_img[col, row][1] = pixel[1]
+            out_img[col, row][2] = pixel[0]
 
     return out_img
 
@@ -54,7 +54,7 @@ def compute_rgb_pixel(X, Y, Z):
     elif B > 255:
         B = 255
 
-    return R, G, B
+    return round(R), round(G), round(B)
 
 
 def xyz2rgb(img):
@@ -62,9 +62,9 @@ def xyz2rgb(img):
     out_img = np.zeros((cols, rows, 3), np.uint8)
     for col in range(cols):
         for row in range(rows):
-            X = img[col, row][0]
+            X = img[col, row][2]
             Y = img[col, row][1]
-            Z = img[col, row][2]
+            Z = img[col, row][0]
 
             pixel = compute_rgb_pixel(X, Y, Z)
 

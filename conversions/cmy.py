@@ -1,5 +1,7 @@
 import numpy as np
 
+# Source: http://www.poynton.com/PDFs/coloureq.pdf
+
 
 def compute_cmy_pixel(R, G, B):
     C = 1 - R

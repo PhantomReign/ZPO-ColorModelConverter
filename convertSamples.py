@@ -25,10 +25,10 @@ def grey():
     move_file("images/leoRGB2GREY.png", "converted")
 
 
-def hls():
-    main.convert_model("images/leo.png", "rgb2hls")
-    move_file("images/leoRGB2HLS.png", "converted")
-    main.convert_model("converted/leoRGB2HLS.png", "hls2rgb")
+def hsl():
+    main.convert_model("images/leo.png", "rgb2hsl")
+    move_file("images/leoRGB2HSL.png", "converted")
+    main.convert_model("converted/leoRGB2HSL.png", "hsl2rgb")
 
 
 def hsv():
@@ -86,14 +86,14 @@ def deficit():
 parser = argparse.ArgumentParser(description="CMC - run samples")
 required_args = parser.add_argument_group('required arguments')
 required_args.add_argument("--model", help="Convert images to model - supported parameters:"
-                                           " all, cmy, deficit, grey, hls,"
+                                           " all, cmy, deficit, grey, hsl,"
                                            " hsv, skin, xyz, ycbcr, yuv", required=True)
 
 args = parser.parse_args()
 
 used_model = args.model
 model_error = True
-supported_models = ["all", "cmy", "deficit", "grey", "hls",
+supported_models = ["all", "cmy", "deficit", "grey", "hsl",
                     "hsv", "skin", "xyz", "ycbcr", "yuv"]
 
 for model in supported_models:
@@ -110,8 +110,8 @@ if used_model == "cmy":
     cmy()
 elif used_model == "grey":
     grey()
-elif used_model == "hls":
-    hls()
+elif used_model == "hsl":
+    hsl()
 elif used_model == "hsv":
     hsv()
 elif used_model == "xyz":
@@ -127,7 +127,7 @@ elif used_model == "deficit":
 else:
     cmy()
     grey()
-    hls()
+    hsl()
     hsv()
     xyz()
     ycbcr()

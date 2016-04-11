@@ -2,6 +2,11 @@ import numpy as np
 import math
 
 
+# Source: http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+#         https://en.wikipedia.org/wiki/HSL_and_HSV
+#         http://opencv.itseez.com/2.4/modules/imgproc/doc/miscellaneous_transformations.html
+
+
 def compute_hsv_pixel(R, G, B):
     max_value = max(R, G, B)
     min_value = min(R, G, B)
@@ -44,9 +49,9 @@ def rgb2hsv(img):
 
             pixel = compute_hsv_pixel(R, G, B)
 
-            out_img[col, row][0] = pixel[0] * 180
+            out_img[col, row][0] = pixel[2] * 255
             out_img[col, row][1] = pixel[1] * 255
-            out_img[col, row][2] = pixel[2] * 255
+            out_img[col, row][2] = pixel[0] * 180
 
     return out_img
 
@@ -93,9 +98,9 @@ def hsv2rgb(img):
     out_img = np.zeros((cols, rows, 3), np.uint8)
     for col in range(cols):
         for row in range(rows):
-            V = img[col, row][2] / 255.
+            H = img[col, row][2] / 180.
             S = img[col, row][1] / 255.
-            H = img[col, row][0] / 180.
+            V = img[col, row][0] / 255.
 
             pixel = compute_rgb_pixel(H, S, V)
 

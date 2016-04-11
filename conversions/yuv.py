@@ -1,6 +1,6 @@
 import numpy as np
 
-# SOURCE:
+# Source: http://www.poynton.com/PDFs/coloureq.pdf
 
 
 def compute_yuv_pixel(R, G, B):
@@ -9,7 +9,7 @@ def compute_yuv_pixel(R, G, B):
     U = R * -0.147 + G * -0.289 + B * 0.436 + 128
     V = R * 0.615 + G * -0.515 + B * -0.100 + 128
 
-    return Y, U, V
+    return round(Y), round(U), round(V)
 
 
 def rgb2yuv(img):
@@ -23,18 +23,18 @@ def rgb2yuv(img):
 
             pixel = compute_yuv_pixel(R, G, B)
 
-            out_img[col, row][0] = pixel[0]
+            out_img[col, row][0] = pixel[2]
             out_img[col, row][1] = pixel[1]
-            out_img[col, row][2] = pixel[2]
+            out_img[col, row][2] = pixel[0]
 
     return out_img
 
 
 def compute_rgb_pixel(Y, U, V):
 
-    R = Y + 1.13983 * V
-    G = Y - 0.39465 * U - 0.58060 * V
-    B = Y + 2.03211 * U
+    R = Y + 1.140 * V
+    G = Y - 0.396 * U - 0.581 * V
+    B = Y + 2.029 * U
 
     if R < 0:
         R = 0
@@ -43,7 +43,14 @@ def compute_rgb_pixel(Y, U, V):
     if B < 0:
         B = 0
 
-    return R, G, B
+    if R > 255:
+        R = 255
+    if G > 255:
+        G = 255
+    if B > 255:
+        B = 255
+
+    return round(R), round(G), round(B)
 
 
 def yuv2rgb(img):
@@ -51,9 +58,9 @@ def yuv2rgb(img):
     out_img = np.zeros((cols, rows, 3), np.uint8)
     for col in range(cols):
         for row in range(rows):
-            Y = img[col, row][0]
+            Y = img[col, row][2]
             U = img[col, row][1]
-            V = img[col, row][2]
+            V = img[col, row][0]
 
             U -= 128
             V -= 128

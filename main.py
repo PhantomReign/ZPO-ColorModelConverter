@@ -4,7 +4,7 @@ import argparse
 import os
 import conversions.cmy
 import conversions.hsv
-import conversions.hls
+import conversions.hsl
 import conversions.ycbcr
 import conversions.xyz
 import conversions.yuv
@@ -35,12 +35,12 @@ def convert_model(file_path, used_conversion):
     elif used_conversion == "hsv2rgb":
         out_image = conversions.hsv.hsv2rgb(in_image)
         save_img(out_image, file_path_with_name, "HSV2RGB", file_extension)
-    elif used_conversion == "rgb2hls":
-        out_image = conversions.hls.rgb2hls(in_image)
-        save_img(out_image, file_path_with_name, "RGB2HLS", file_extension)
-    elif used_conversion == "hls2rgb":
-        out_image = conversions.hls.hls2rgb(in_image)
-        save_img(out_image, file_path_with_name, "HLS2RGB", file_extension)
+    elif used_conversion == "rgb2hsl":
+        out_image = conversions.hsl.rgb2hsl(in_image)
+        save_img(out_image, file_path_with_name, "RGB2HSL", file_extension)
+    elif used_conversion == "hsl2rgb":
+        out_image = conversions.hsl.hsl2rgb(in_image)
+        save_img(out_image, file_path_with_name, "HSL2RGB", file_extension)
     elif used_conversion == "rgb2ycbcr":
         out_image = conversions.ycbcr.rgb2ycbcr(in_image)
         save_img(out_image, file_path_with_name, "RGB2YCBCR", file_extension)
@@ -74,9 +74,9 @@ def convert_model(file_path, used_conversion):
     elif used_conversion == "rgb2t-nopia":
         out_image = conversions.color_deficit.rgb2deficit(in_image, "rgb2t-nopia")
         save_img(out_image, file_path_with_name, "RGB2T-NOPIA", file_extension)
-    # test
-    # outS = cv2.cvtColor(in_image, cv2.COLOR_BGR2GRAY)
-    # cv2.imwrite(file_path_with_name + "SOURCE" + file_extension, outS)
+    #test
+    # outS = cv2.cvtColor(in_image, cv2.COLOR_BGR2YUV)
+    #cv2.imwrite(file_path_with_name + "SOURCE2" + file_extension, outS)
 
 
 def main():
@@ -89,7 +89,7 @@ def main():
     required_args.add_argument("--convert", help="Type of conversion - available:"
                                                  " rgb2cmy, cmy2rgb,"
                                                  " rgb2hsv, hsv2rgb"
-                                                 " rgb2hls, hls2rgb"
+                                                 " rgb2hsl, hsl2rgb"
                                                  " rgb2ycbcr, ycbcr2rgb"
                                                  " rgb2xyz, xyz2rgb"
                                                  " rgb2yuv, yuv2rgb"
@@ -120,7 +120,7 @@ def main():
         sys.exit(-2)
 
     conversion_error = True
-    supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb", "rgb2hls", "hls2rgb",
+    supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb", "rgb2hsl", "hsl2rgb",
                              "rgb2ycbcr", "ycbcr2rgb", "rgb2xyz", "xyz2rgb", "rgb2yuv", "yuv2rgb",
                              "rgb2skin", "rgb2grey", "rgb2p-nopia", "rgb2d-nopia", "rgb2t-nopia"]
     for conversion in supported_conversions:
