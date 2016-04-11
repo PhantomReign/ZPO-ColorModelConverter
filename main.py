@@ -74,9 +74,6 @@ def convert_model(file_path, used_conversion):
     elif used_conversion == "rgb2t-nopia":
         out_image = conversions.color_deficit.rgb2deficit(in_image, "rgb2t-nopia")
         save_img(out_image, file_path_with_name, "RGB2T-NOPIA", file_extension)
-    #test
-    # outS = cv2.cvtColor(in_image, cv2.COLOR_BGR2YUV)
-    #cv2.imwrite(file_path_with_name + "SOURCE2" + file_extension, outS)
 
 
 def main():
