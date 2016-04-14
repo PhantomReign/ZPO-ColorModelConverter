@@ -133,7 +133,7 @@ def main():
     required_args.add_argument("--path",
                                help="path to image file - supported extensions: " + ", ".join(supported_extensions),
                                required=True,
-                               type=lambda s: file_choices(parser, supported_extensions, s))
+                               type=lambda f: file_choices(parser, supported_extensions, f))
     required_args.add_argument("--convert",
                                help="type of conversion - available: " + ", ".join(supported_conversions),
                                required=True,
