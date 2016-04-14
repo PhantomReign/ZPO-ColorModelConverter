@@ -1,6 +1,6 @@
 import numpy as np
 
-# SOURCE: http://opencv.itseez.com/2.4/modules/imgproc/doc/miscellaneous_transformations.html
+# Source: http://opencv.itseez.com/2.4/modules/imgproc/doc/miscellaneous_transformations.html
 
 
 def compute_xyz_pixel(R, G, B):

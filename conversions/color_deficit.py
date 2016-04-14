@@ -1,7 +1,7 @@
 import numpy as np
 
+# Source: http://www.daltonize.org/
 
-# SOURCE: http://www.daltonize.org/
 
 def compute_lms_pixel(R, G, B):
     L = (17.8824 * R) + (43.5161 * G) + (4.11935 * B)

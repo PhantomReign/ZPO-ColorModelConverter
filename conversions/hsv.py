@@ -2,9 +2,9 @@ import numpy as np
 import math
 
 
-# Source: http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+# Source: http://opencv.itseez.com/2.4/modules/imgproc/doc/miscellaneous_transformations.html
 #         https://en.wikipedia.org/wiki/HSL_and_HSV
-#         http://opencv.itseez.com/2.4/modules/imgproc/doc/miscellaneous_transformations.html
+#         http://www.lps.usp.br/hae/apostila/basico/HSI-wikipedia.pdf
 
 
 def compute_hsv_pixel(R, G, B):
@@ -23,21 +23,19 @@ def compute_hsv_pixel(R, G, B):
         H = 0
     else:
         if R == max_value:
-            if G < B:
-                H = (G - B) / (max_value - min_value) + 6
-            else:
-                H = (G - B) / (max_value - min_value) + 0
+            H = 60 * (G - B) / (max_value - min_value)
         elif G == max_value:
-            H = (B - R) / (max_value - min_value) + 2
+            H = 120 + 60 * (B - R) / (max_value - min_value)
         elif B == max_value:
-            H = (R - G) / (max_value - min_value) + 4
+            H = 240 + 60 * (R - G) / (max_value - min_value)
 
-        H /= 6.
+    if H < 0:
+        H += 360
+    H /= 2.
 
     return H, S, V
 
 
-# used Foley and VanDam algorithm
 def rgb2hsv(img):
     cols, rows, channels = img.shape
     out_img = np.zeros((cols, rows, 3), np.uint8)
@@ -51,7 +49,7 @@ def rgb2hsv(img):
 
             out_img[col, row][0] = pixel[2] * 255
             out_img[col, row][1] = pixel[1] * 255
-            out_img[col, row][2] = pixel[0] * 180
+            out_img[col, row][2] = pixel[0]
 
     return out_img
 

@@ -1,8 +1,10 @@
-import main
+import cmc
 import shutil
 import os
 import argparse
 import sys
+
+# test file - used for demonstration
 
 
 def move_file(source, destination):
@@ -15,70 +17,70 @@ def move_file(source, destination):
 
 
 def cmy():
-    main.convert_model("images/leo.png", "rgb2cmy")
+    cmc.convert_model("images/leo.png", "rgb2cmy")
     move_file("images/leoRGB2CMY.png", "converted")
-    main.convert_model("converted/leoRGB2CMY.png", "cmy2rgb")
+    cmc.convert_model("converted/leoRGB2CMY.png", "cmy2rgb")
 
 
 def grey():
-    main.convert_model("images/leo.png", "rgb2grey")
+    cmc.convert_model("images/leo.png", "rgb2grey")
     move_file("images/leoRGB2GREY.png", "converted")
 
 
 def hsl():
-    main.convert_model("images/leo.png", "rgb2hsl")
+    cmc.convert_model("images/leo.png", "rgb2hsl")
     move_file("images/leoRGB2HSL.png", "converted")
-    main.convert_model("converted/leoRGB2HSL.png", "hsl2rgb")
+    cmc.convert_model("converted/leoRGB2HSL.png", "hsl2rgb")
 
 
 def hsv():
-    main.convert_model("images/leo.png", "rgb2hsv")
+    cmc.convert_model("images/leo.png", "rgb2hsv")
     move_file("images/leoRGB2HSV.png", "converted")
-    main.convert_model("converted/leoRGB2HSV.png", "hsv2rgb")
+    cmc.convert_model("converted/leoRGB2HSV.png", "hsv2rgb")
 
 
 def xyz():
-    main.convert_model("images/leo.png", "rgb2xyz")
+    cmc.convert_model("images/leo.png", "rgb2xyz")
     move_file("images/leoRGB2XYZ.png", "converted")
-    main.convert_model("converted/leoRGB2XYZ.png", "xyz2rgb")
+    cmc.convert_model("converted/leoRGB2XYZ.png", "xyz2rgb")
 
 
 def ycbcr():
-    main.convert_model("images/leo.png", "rgb2ycbcr")
+    cmc.convert_model("images/leo.png", "rgb2ycbcr")
     move_file("images/leoRGB2YCBCR.png", "converted")
-    main.convert_model("converted/leoRGB2YCBCR.png", "ycbcr2rgb")
+    cmc.convert_model("converted/leoRGB2YCBCR.png", "ycbcr2rgb")
 
 
 def yuv():
-    main.convert_model("images/leo.png", "rgb2yuv")
+    cmc.convert_model("images/leo.png", "rgb2yuv")
     move_file("images/leoRGB2YUV.png", "converted")
-    main.convert_model("converted/leoRGB2YUV.png", "yuv2rgb")
+    cmc.convert_model("converted/leoRGB2YUV.png", "yuv2rgb")
 
 
 def skin():
-    main.convert_model("images/anne.jpg", "rgb2skin")
+    cmc.convert_model("images/anne.jpg", "rgb2skin")
     move_file("images/anneRGB2SKIN.jpg", "converted")
 
-    main.convert_model("images/leo.png", "rgb2skin")
+    cmc.convert_model("images/leo.png", "rgb2skin")
     move_file("images/leoRGB2SKIN.png", "converted")
 
-    main.convert_model("images/lawrence.png", "rgb2skin")
+    cmc.convert_model("images/lawrence.png", "rgb2skin")
     move_file("images/lawrenceRGB2SKIN.png", "converted")
 
 
 def deficit():
-    main.convert_model("images/metro.jpg", "rgb2p-nopia")
+    cmc.convert_model("images/metro.jpg", "rgb2p-nopia")
     move_file("images/metroRGB2P-NOPIA.jpg", "converted")
-    main.convert_model("images/metro.jpg", "rgb2d-nopia")
+    cmc.convert_model("images/metro.jpg", "rgb2d-nopia")
     move_file("images/metroRGB2D-NOPIA.jpg", "converted")
-    main.convert_model("images/metro.jpg", "rgb2t-nopia")
+    cmc.convert_model("images/metro.jpg", "rgb2t-nopia")
     move_file("images/metroRGB2T-NOPIA.jpg", "converted")
 
-    main.convert_model("images/paprika.jpg", "rgb2p-nopia")
+    cmc.convert_model("images/paprika.jpg", "rgb2p-nopia")
     move_file("images/paprikaRGB2P-NOPIA.jpg", "converted")
-    main.convert_model("images/paprika.jpg", "rgb2d-nopia")
+    cmc.convert_model("images/paprika.jpg", "rgb2d-nopia")
     move_file("images/paprikaRGB2D-NOPIA.jpg", "converted")
-    main.convert_model("images/paprika.jpg", "rgb2t-nopia")
+    cmc.convert_model("images/paprika.jpg", "rgb2t-nopia")
     move_file("images/paprikaRGB2T-NOPIA.jpg", "converted")
 
 

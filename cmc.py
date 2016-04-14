@@ -13,6 +13,14 @@ import conversions.grey
 import conversions.color_deficit
 
 
+def file_choices(parser, choices, image_file):
+    extension = os.path.splitext(image_file)[1]
+    if extension not in choices:
+        parser.error("argument --path: invalid choice: {0} choose from {1})".format(extension, ", ".join(
+            "'" + item + "'" for item in choices)))
+    return image_file
+
+
 def save_img(image, path, conversion, extension):
     cv2.imwrite(path + conversion + extension, image)
 
@@ -74,60 +82,70 @@ def convert_model(file_path, used_conversion):
     elif used_conversion == "rgb2t-nopia":
         out_image = conversions.color_deficit.rgb2deficit(in_image, "rgb2t-nopia")
         save_img(out_image, file_path_with_name, "RGB2T-NOPIA", file_extension)
+    elif used_conversion == "all":
+        out_image = conversions.cmy.rgb2cmy(in_image)
+        save_img(out_image, file_path_with_name, "RGB2CMY", file_extension)
+
+        out_image = conversions.hsv.rgb2hsv(in_image)
+        save_img(out_image, file_path_with_name, "RGB2HSV", file_extension)
+
+        out_image = conversions.hsl.rgb2hsl(in_image)
+        save_img(out_image, file_path_with_name, "RGB2HSL", file_extension)
+
+        out_image = conversions.ycbcr.rgb2ycbcr(in_image)
+        save_img(out_image, file_path_with_name, "RGB2YCBCR", file_extension)
+
+        out_image = conversions.xyz.rgb2xyz(in_image)
+        save_img(out_image, file_path_with_name, "RGB2XYZ", file_extension)
+
+        out_image = conversions.yuv.rgb2yuv(in_image)
+        save_img(out_image, file_path_with_name, "RGB2YUV", file_extension)
+
+        out_image = conversions.skin_segmentation.rgb2skin(in_image)
+        save_img(out_image, file_path_with_name, "RGB2SKIN", file_extension)
+
+        out_image = conversions.grey.rgb2grey(in_image)
+        save_img(out_image, file_path_with_name, "RGB2GREY", file_extension)
+
+        out_image = conversions.color_deficit.rgb2deficit(in_image, "rgb2p-nopia")
+        save_img(out_image, file_path_with_name, "RGB2P-NOPIA", file_extension)
+
+        out_image = conversions.color_deficit.rgb2deficit(in_image, "rgb2d-nopia")
+        save_img(out_image, file_path_with_name, "RGB2D-NOPIA", file_extension)
+
+        out_image = conversions.color_deficit.rgb2deficit(in_image, "rgb2t-nopia")
+        save_img(out_image, file_path_with_name, "RGB2T-NOPIA", file_extension)
+    else:
+        sys.stderr.write('error: unsupported conversion\n')
+        sys.exit(-2)
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Color Model Converter")
-    required_args = parser.add_argument_group('required arguments')
-    required_args.add_argument("--path", help="Path to image to convert - supported extensions:"
-                                              " .bmp, .dib, .jpeg, .jpg, .jpe,"
-                                              " .jp2, .png, .webp, .pbm, .pgm,"
-                                              " .ppm, .sr, .ras, .tiff, .tif", required=True)
-    required_args.add_argument("--convert", help="Type of conversion - available:"
-                                                 " rgb2cmy, cmy2rgb,"
-                                                 " rgb2hsv, hsv2rgb"
-                                                 " rgb2hsl, hsl2rgb"
-                                                 " rgb2ycbcr, ycbcr2rgb"
-                                                 " rgb2xyz, xyz2rgb"
-                                                 " rgb2yuv, yuv2rgb"
-                                                 " rgb2skin, rgb2grey"
-                                                 " rgb2p-nopia, rgb2d-nopia"
-                                                 " rgb2t-nopia", required=True)
-    args = parser.parse_args()
-
-    if not os.path.isfile(args.path):
-        sys.stderr.write('error: File does not exist\n')
-        sys.exit(-1)
-
-    file_extension = os.path.splitext(args.path)[1]
-    used_conversion = args.convert
-
-    extension_error = True
+    parser = argparse.ArgumentParser(description="Color Model Converter - ZPO Project 2016",
+                                     epilog="All files are stored in source file directory")
     supported_extensions = [".bmp", ".dib", ".jpeg", ".jpg", ".jpe",
                             ".jp2", ".png", ".webp", ".pbm", ".pgm",
                             ".ppm", ".sr", ".ras", ".tiff", ".tif"]
-
-    for extension in supported_extensions:
-        if extension == file_extension:
-            extension_error = False
-
-    if extension_error:
-        sys.stderr.write('error: File is not supported\n'
-                         'Use [-h] for help\n')
-        sys.exit(-2)
-
-    conversion_error = True
     supported_conversions = ["rgb2cmy", "cmy2rgb", "rgb2hsv", "hsv2rgb", "rgb2hsl", "hsl2rgb",
                              "rgb2ycbcr", "ycbcr2rgb", "rgb2xyz", "xyz2rgb", "rgb2yuv", "yuv2rgb",
-                             "rgb2skin", "rgb2grey", "rgb2p-nopia", "rgb2d-nopia", "rgb2t-nopia"]
-    for conversion in supported_conversions:
-        if used_conversion == conversion:
-            conversion_error = False
+                             "rgb2skin", "rgb2grey", "rgb2p-nopia", "rgb2d-nopia", "rgb2t-nopia", "all"]
+    required_args = parser.add_argument_group('required arguments')
+    required_args.add_argument("--path",
+                               help="path to image file - supported extensions: " + ", ".join(supported_extensions),
+                               required=True,
+                               type=lambda s: file_choices(parser, supported_extensions, s))
+    required_args.add_argument("--convert",
+                               help="type of conversion - available: " + ", ".join(supported_conversions),
+                               required=True,
+                               choices=supported_conversions,
+                               metavar="CONVERSION")
+    args = parser.parse_args()
 
-    if conversion_error:
-        sys.stderr.write('error: Conversion is not supported\n'
-                         'Use [-h] for help\n')
-        sys.exit(-3)
+    if not os.path.isfile(args.path):
+        sys.stderr.write('error: file does not exist\n')
+        sys.exit(-1)
+
+    used_conversion = args.convert
 
     convert_model(args.path, used_conversion)
 

@@ -1,7 +1,7 @@
 import numpy as np
 import conversions.yuv
 
-# SOURCE: http://52.68.174.105:8080/jips/dlibrary/JIPS_v10_no2_paper9.pdf
+# Source: http://52.68.174.105:8080/jips/dlibrary/JIPS_v10_no2_paper9.pdf
 
 
 def compute_rgb_pixel(R, G, B):
