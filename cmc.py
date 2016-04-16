@@ -22,12 +22,26 @@ def file_choices(parser, choices, image_file):
 
 
 def save_img(image, path, conversion, extension):
-    cv2.imwrite(path + conversion + extension, image)
+    try:
+        cv2.imwrite(path + conversion + extension, image)
+    except cv2.error:
+        sys.stderr.write("Please try to convert the image to another format.\n")
+        exit(-3)
+
+
+def load_img(file_path):
+    image = cv2.imread(file_path, cv2.IMREAD_UNCHANGED)
+    if image is None:
+        sys.stderr.write("error: OpenCV can't load this image. Try to convert it.\n")
+        sys.exit(-2)
+    if len(image.shape) < 3:
+        image = cv2.imread(file_path, cv2.IMREAD_COLOR)
+    return image
 
 
 def convert_model(file_path, used_conversion):
     in_file_path = file_path
-    in_image = cv2.imread(in_file_path, cv2.IMREAD_UNCHANGED)
+    in_image = load_img(in_file_path)
 
     file_path_with_name, file_extension = os.path.splitext(in_file_path)
 
@@ -146,9 +160,7 @@ def main():
         sys.stderr.write('error: file does not exist\n')
         sys.exit(-1)
 
-    used_conversion = args.convert
-
-    convert_model(args.path, used_conversion)
+    convert_model(args.p, args.c)
 
 
 if __name__ == '__main__':
