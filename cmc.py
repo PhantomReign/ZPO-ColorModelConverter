@@ -122,7 +122,7 @@ def convert_model(file_path, used_conversion):
 
 def main():
     parser = argparse.ArgumentParser(description="Color Model Converter - ZPO Project 2016",
-                                     epilog="All files are stored in source file directory")
+                                     epilog="All converted files will be stored in source file directory")
     supported_extensions = [".bmp", ".dib", ".jpeg", ".jpg", ".jpe",
                             ".jp2", ".png", ".webp", ".pbm", ".pgm",
                             ".ppm", ".sr", ".ras", ".tiff", ".tif"]
@@ -130,18 +130,19 @@ def main():
                              "rgb2ycbcr", "ycbcr2rgb", "rgb2xyz", "xyz2rgb", "rgb2yuv", "yuv2rgb",
                              "rgb2skin", "rgb2grey", "rgb2p-nopia", "rgb2d-nopia", "rgb2t-nopia", "all"]
     required_args = parser.add_argument_group('required arguments')
-    required_args.add_argument("--path",
+    required_args.add_argument("-p",
                                help="path to image file - supported extensions: " + ", ".join(supported_extensions),
                                required=True,
-                               type=lambda f: file_choices(parser, supported_extensions, f))
-    required_args.add_argument("--convert",
+                               type=lambda f: file_choices(parser, supported_extensions, f),
+                               metavar="PATH")
+    required_args.add_argument("-c",
                                help="type of conversion - available: " + ", ".join(supported_conversions),
                                required=True,
                                choices=supported_conversions,
                                metavar="CONVERSION")
     args = parser.parse_args()
 
-    if not os.path.isfile(args.path):
+    if not os.path.isfile(args.p):
         sys.stderr.write('error: file does not exist\n')
         sys.exit(-1)
 

@@ -4,7 +4,7 @@ import conversions.yuv
 # Source: http://52.68.174.105:8080/jips/dlibrary/JIPS_v10_no2_paper9.pdf
 
 
-def compute_rgb_pixel(R, G, B):
+def compute_pixel(R, G, B):
     Y, U, V = conversions.yuv.compute_yuv_pixel(R, G, B)
 
     if not (80 < U < 130 and 136 < V < 200 and Y > U):
@@ -30,7 +30,7 @@ def rgb2skin(img):
             G = img[col, row][1]
             B = img[col, row][0]
 
-            pixel = compute_rgb_pixel(R, G, B)
+            pixel = compute_pixel(R, G, B)
 
             out_img[col, row][0] = pixel[2]
             out_img[col, row][1] = pixel[1]
