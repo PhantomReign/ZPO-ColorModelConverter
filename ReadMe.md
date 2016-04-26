@@ -18,7 +18,7 @@
 description: Application converts image to selected model based on conversion 
              type. All converted files will be stored in source file directory.
 
-usage: cmc.py [-h] -p PATH -c CONVERSION
+usage: python cmc.py [-h] -p PATH -c CONVERSION
 
 optional arguments:
   -h, --help     Show help message and exit
