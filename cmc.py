@@ -136,7 +136,8 @@ def convert_model(file_path, used_conversion):
 
 def main():
     parser = argparse.ArgumentParser(description="Color Model Converter - ZPO Project 2016",
-                                     epilog="All converted files will be stored in source file directory")
+                                     epilog="All converted files will be stored in source file directory",
+                                     usage="python cmc.py [-h] -p PATH -c CONVERSION")
     supported_extensions = [".bmp", ".dib", ".jpeg", ".jpg", ".jpe",
                             ".jp2", ".png", ".webp", ".pbm", ".pgm",
                             ".ppm", ".sr", ".ras", ".tiff", ".tif"]
