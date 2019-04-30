@@ -1,5 +1,5 @@
 #                               ZPO Project 2016                              
->   Created by Matúš Turic (xturic01) and Peter Cilip (xcilip00) at FIT BUT as a ZPO project.
+>   Created by Matúš Turic at FIT BUT as a ZPO project.
 
 ## description: 
 Application converts image to selected model based on conversion type. 
